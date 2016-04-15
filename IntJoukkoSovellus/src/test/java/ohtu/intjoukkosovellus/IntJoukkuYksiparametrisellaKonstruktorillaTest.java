@@ -15,6 +15,10 @@ public class IntJoukkuYksiparametrisellaKonstruktorillaTest extends IntJoukkoTes
         joukko.lisaa(10);
         joukko.lisaa(3);
     }
-    
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testaaNegatiivinenKapasiteetti(){
+        joukko = new IntJoukko(-4);
+    }
     // perii kaikki testit luokasta IntJoukkoTest
 }
