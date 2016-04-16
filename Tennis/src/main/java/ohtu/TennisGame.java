@@ -1,9 +1,10 @@
 package ohtu;
 
+
 public class TennisGame {
     
-    private int m_score1 = 0;
-    private int m_score2 = 0;
+    private int p1_score = 0;
+    private int p2_score = 0;
     private String player1Name;
     private String player2Name;
 
@@ -13,68 +14,63 @@ public class TennisGame {
     }
 
     public void wonPoint(String playerName) {
-        if (playerName == "player1")
-            m_score1 += 1;
+        if (playerName.equals("player1"))
+            p1_score += 1;
         else
-            m_score2 += 1;
+            p2_score += 1;
     }
 
     public String getScore() {
-        String score = "";
-        int tempScore=0;
-        if (m_score1==m_score2)
+        if(deuce()){
+            return "Deuce";
+        }else if (game())
         {
-            switch (m_score1)
-            {
-                case 0:
-                        score = "Love-All";
-                    break;
-                case 1:
-                        score = "Fifteen-All";
-                    break;
-                case 2:
-                        score = "Thirty-All";
-                    break;
-                case 3:
-                        score = "Forty-All";
-                    break;
-                default:
-                        score = "Deuce";
-                    break;
-                
-            }
+            return gameString();
         }
-        else if (m_score1>=4 || m_score2>=4)
-        {
-            int minusResult = m_score1-m_score2;
-            if (minusResult==1) score ="Advantage player1";
-            else if (minusResult ==-1) score ="Advantage player2";
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
+        else {
+            return scoreString();
         }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                if (i==1) tempScore = m_score1;
-                else { score+="-"; tempScore = m_score2;}
-                switch(tempScore)
-                {
-                    case 0:
-                        score+="Love";
-                        break;
-                    case 1:
-                        score+="Fifteen";
-                        break;
-                    case 2:
-                        score+="Thirty";
-                        break;
-                    case 3:
-                        score+="Forty";
-                        break;
-                }
-            }
-        }
-        return score;
     }
+    private boolean drawn(){
+        return p1_score == p2_score;
+    }
+    private boolean deuce(){
+        return drawn() && p1_score >= 4;
+    }
+    private  boolean game(){
+        return p1_score >=4 || p2_score >= 4;
+    }
+    private boolean p1Advantages(){
+        return (p1_score - p2_score) == 1;
+    }
+    private boolean p1Wins(){
+        return (p1_score - p2_score) >= 2;
+    }
+    private boolean p2Advantages(){
+        return (p1_score - p2_score) == -1;
+    }
+
+    private String scoreString(){
+        StringBuilder sb = new StringBuilder();
+        final String[] scoreConstants = {"Love","Fifteen","Thirty","Forty"};
+        if(p1_score < 4){
+            sb.append(scoreConstants[p1_score]);
+        }
+        sb.append("-");
+        if(drawn()){
+            sb.append("All");
+        }else{
+            if(p2_score < 4){
+                sb.append(scoreConstants[p2_score]);
+            }
+        }
+        return sb.toString();
+    }
+    private String gameString(){
+        if (p1Advantages()) return "Advantage player1";
+        else if (p2Advantages()) return "Advantage player2";
+        else if (p1Wins()) return  "Win for player1";
+        else return "Win for player2";
+    }
+
 }
