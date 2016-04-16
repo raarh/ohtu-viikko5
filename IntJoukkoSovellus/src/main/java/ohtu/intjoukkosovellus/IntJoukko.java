@@ -65,9 +65,7 @@ public class IntJoukko {
                 left--;
             }
             sb.append("}");
-
             return sb.toString();
-
         }
     }
     private static List<Integer> joukkoListaksi(IntJoukko a){
